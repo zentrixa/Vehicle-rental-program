@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Your Rental</title>
+
+    <!-- 1. Firebase JS SDK Imports (v10.x Modules) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // =========================================================================
+        // 2. FIREBASE CONFIGURATION OBJECT
+        // Get these values from: Firebase Console -> Project Settings -> Your Apps
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOaRQODkuWWoxdqUlFDM3E0nzOoGV1IQo",
+            authDomain: "vehicle-rental-421f2.firebaseapp.com",
+            projectId: "vehicle-rental-421f2",
+            storageBucket: "vehicle-rental-421f2.firebasestorage.app",
+            messagingSenderId: "629599849447",
+            appId: "1:629599849447:web:c0a9a919ee156fc1340b42",
+            measurementId: "G-5DD6621T25"
+        };
+
+        // Initialize Firebase & Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make review submission function available to form onsubmit
+        window.submitReviewToFirebase = async function(event) {
+            event.preventDefault();
+
+            const bookingID = document.getElementById('bookingID').value.trim();
+            const comment = document.getElementById('comment').value.trim();
+            const ratingElement = document.querySelector('input[name="rating"]:checked');
+
+            if (!ratingElement) {
+                showAlert("Please select a star rating.", "error");
+                return;
+            }
+
+            const rating = parseInt(ratingElement.value);
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.innerText = "Verifying with Firebase...";
+            submitBtn.disabled = true;
+
+            try {
+                // Step A: Look up the Booking document in Firestore 'bookings' collection
+                const bookingRef = doc(db, "bookings", bookingID);
+                const bookingSnap = await getDoc(bookingRef);
+
+                if (!bookingSnap.exists()) {
+                    showAlert(`Error: Booking ref ${bookingID} not found in database.`, "error");
+                    resetBtn(submitBtn);
+                    return;
+                }
+
+                const bookingData = bookingSnap.data();
+
+                // Step B: Match ReviewManager.java logic -> Check if status is COMPLETED
+                if (!bookingData.status || bookingData.status.toUpperCase() !== "COMPLETED") {
+                    showAlert("Error: This rental is not marked as COMPLETED yet.", "error");
+                    resetBtn(submitBtn);
+                    return;
+                }
+
+                // Step C: Generate unique Review ID (REV + Timestamp)
+                const reviewID = "REV" + Date.now();
+
+                // Step D: Write new review to Firestore 'reviews' collection
+                await setDoc(doc(db, "reviews", reviewID), {
+                    reviewID: reviewID,
+                    bookingID: bookingID,
+                    customerID: bookingData.customerID || "CUST_SESSION",
+                    vehicleID: bookingData.vehicleID || "VEH_SESSION",
+                    rating: rating,
+                    comment: comment,
+                    timestamp: Date.now()
+                });
+
+                showAlert(`✓ Verified! Review ${reviewID} posted successfully.`, "success");
+                document.getElementById('reviewForm').reset();
+                resetBtn(submitBtn);
+
+            } catch (error) {
+                showAlert("Firebase Error: " + error.message, "error");
+                resetBtn(submitBtn);
+            }
+        };
+
+        function resetBtn(btn) {
+            btn.innerText = "Submit Verified Review";
+            btn.disabled = false;
+        }
+
+        function showAlert(msg, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.style.display = 'block';
+            alertBox.innerText = msg;
+            alertBox.className = type === "success" ? "alert alert-success" : "alert alert-error";
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-offwhite: #f3f3f0;
+            --card-white: #ffffff;
+            --input-bg: #f8f8f6;
+            --border-soft: #e5e5e0;
+            --text-dark: #121212;
+            --text-muted: #6b6b6b;
+            --uber-star: #ffc043;
+            --green: #06c167;
+            --red: #e11d48;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-offwhite);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 16px;
+            color: var(--text-dark);
+        }
+
+        .card {
+            background-color: var(--card-white);
+            width: 100%;
+            max-width: 420px;
+            padding: 32px 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-soft);
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .input-control:focus {
+            border-color: var(--text-dark);
+            background-color: #ffffff;
+        }
+
+        textarea.input-control {
+            height: 90px;
+            resize: none;
+        }
+
+        .rating-section {
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 14px;
+            background-color: var(--input-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+        }
+
+        .rating-section label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            direction: rtl;
+            gap: 8px;
+        }
+
+        .stars input { display: none; }
+
+        .stars label {
+            font-size: 2rem;
+            color: #d1d1cc;
+            cursor: pointer;
+            transition: color 0.15s ease;
+        }
+
+        .stars input:checked ~ label,
+        .stars label:hover,
+        .stars label:hover ~ label {
+            color: var(--uber-star);
+        }
+
+        .btn-uber {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            background-color: var(--text-dark);
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-uber:hover { background-color: #2c2c2c; }
+        .btn-uber:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: rgba(225, 29, 72, 0.1);
+            color: var(--red);
+            border: 1px solid rgba(225, 29, 72, 0.2);
+        }
+
+        .alert-success {
+            background-color: rgba(6, 193, 103, 0.1);
+            color: var(--green);
+            border: 1px solid rgba(6, 193, 103, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h1>Rate your rental</h1>
+        <p>Enter your Booking Reference to leave feedback</p>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <form id="reviewForm" onsubmit="submitReviewToFirebase(event)">
+
+        <div class="input-group">
+            <label for="bookingID">Booking Reference</label>
+            <input type="text" id="bookingID" class="input-control" placeholder="e.g. BOOK999" required>
+        </div>
+
+        <div class="rating-section">
+            <label>Select Rating</label>
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="comment">Rental Feedback</label>
+            <textarea id="comment" class="input-control" placeholder="How was the vehicle condition and driving experience?" required></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-uber">Submit Verified Review</button>
+    </form>
+</div>
+
+</body>
+</html>
