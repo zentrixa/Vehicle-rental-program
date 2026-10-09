@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+</head>
+<body>
+<div class="auth">
+
+    <aside class="auth-sign">
+        <a class="brand" href="/index.html">Kerbside</a>
+        <div>
+            <h1>Welcome back.</h1>
+            <p>Log in to pick up where you left off.</p>
+        </div>
+    </aside>
+
+    <main class="auth-main">
+        <form class="auth-form" id="loginForm" novalidate>
+            <h2>Log in</h2>
+
+            <div class="field">
+                <label for="log_name">Username</label>
+                <input type="text" id="log_name" autocomplete="username" autocapitalize="none"
+                       spellcheck="false" required data-label="username">
+                <p class="hint">Premium members can also use their member number.</p>
+            </div>
+
+            <div class="field">
+                <label for="log_pass">Password</label>
+                <div class="password-wrap">
+                    <input type="password" id="log_pass" autocomplete="current-password"
+                           required data-label="password">
+                    <button type="button" class="toggle-password" data-toggle-password="log_pass"
+                            aria-pressed="false">Show</button>
+                </div>
+            </div>
+
+            <p class="form-error" id="ErrorMSG" role="alert" hidden></p>
+
+            <button type="submit" class="btn btn-primary btn-block" id="login">Log in</button>
+
+            <p class="form-switch">New here? <a href="signup.html">Create an account</a></p>
+        </form>
+    </main>
+
+</div>
+
+<script src="../js/common.js"></script>
+<script src="loginfunc.js"></script>
+</body>
+</html>

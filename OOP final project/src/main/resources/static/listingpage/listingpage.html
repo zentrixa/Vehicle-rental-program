@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vehicles | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="/listingpage/listingpage.html">Kerbside</a>
+        <nav class="site-nav" aria-label="Account">
+            <a id="adminLink" href="/admin/admin.html" hidden>Admin page</a>
+            <a class="btn btn-primary" id="profileButton" href="/profile/profile.html">Profile</a>
+            <button type="button" class="link-button" data-logout>Log out</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Vehicles</h1>
+        <p class="page-sub" id="welcome"></p>
+
+        <div class="empty">
+            <h2>No vehicles to show yet</h2>
+            <p>Available vehicles will be listed here.</p>
+        </div>
+    </main>
+
+<script src="../js/session.js"></script>
+<script>
+    requireLogin().then(function (me) {
+        if (!me) return;
+        document.getElementById("welcome").textContent = "Signed in as " + me.username + ".";
+        // admins can see this page too, with a way back to their own
+        if (me.role === "ADMIN") document.getElementById("adminLink").hidden = false;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your profile | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="/listingpage/listingpage.html">Kerbside</a>
+        <nav class="site-nav" aria-label="Account">
+            <a id="adminLink" href="/admin/admin.html" hidden>Admin page</a>
+            <a href="/listingpage/listingpage.html">Vehicles</a>
+            <button type="button" class="link-button" data-logout>Log out</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Your profile</h1>
+        <p class="form-success" id="profileMsg" role="status" hidden></p>
+
+        <section id="viewSection">
+            <dl class="profile" id="profileList"></dl>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="editButton" hidden>Edit details</button>
+            </div>
+        </section>
+
+        <form class="profile-form" id="profileForm" novalidate hidden>
+            <p class="hint" style="margin-bottom: 1.25rem;">Your username and member number can't be changed.</p>
+
+            <div class="field">
+                <label for="edit_email">Email</label>
+                <input type="email" id="edit_email" autocomplete="email" required
+                       data-label="email address"
+                       data-error="Enter a valid email address, like name@example.com.">
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="edit_contactNo">Contact number</label>
+                    <input type="tel" id="edit_contactNo" autocomplete="tel" inputmode="tel" required
+                           data-label="contact number" pattern="\+?[0-9]{7,15}"
+                           data-error="Enter a contact number with 7 to 15 digits, no spaces.">
+                </div>
+
+                <div class="field">
+                    <label for="edit_licenceNo">Licence number</label>
+                    <input type="text" class="mono" id="edit_licenceNo" autocomplete="off"
+                           spellcheck="false" required data-label="licence number"
+                           pattern="[A-Za-z0-9]{5,20}"
+                           data-error="Enter your licence number as printed, letters and digits only.">
+                </div>
+            </div>
+
+            <fieldset class="field">
+                <legend>Membership</legend>
+                <div class="tiers">
+                    <label class="tier">
+                        <input type="radio" name="membership" value="false">
+                        Regular
+                    </label>
+                    <label class="tier">
+                        <input type="radio" name="membership" value="true">
+                        Premium
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset class="field">
+                <legend>Change password</legend>
+                <p class="hint" style="margin: 0 0 0.75rem;">Leave both boxes empty to keep your current password.</p>
+
+                <div class="field">
+                    <label for="edit_currentPassword">Current password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="edit_currentPassword" autocomplete="current-password">
+                        <button type="button" class="toggle-password" data-toggle-password="edit_currentPassword"
+                                aria-pressed="false">Show</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="edit_newPassword">New password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="edit_newPassword" autocomplete="new-password">
+                        <button type="button" class="toggle-password" data-toggle-password="edit_newPassword"
+                                aria-pressed="false">Show</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <p class="form-error" id="profileError" role="alert" hidden></p>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" id="saveButton">Save changes</button>
+                <button type="button" class="btn btn-outline-dark" id="cancelButton">Cancel</button>
+            </div>
+        </form>
+    </main>
+
+<script src="../js/common.js"></script>
+<script src="../js/session.js"></script>
+<script src="profilefunc.js"></script>
+</body>
+</html>
