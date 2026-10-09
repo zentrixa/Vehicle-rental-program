@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+</head>
+<body>
+<div class="auth">
+
+    <aside class="auth-sign">
+        <a class="brand" href="/index.html">Kerbside</a>
+        <div>
+            <h1>Create your account.</h1>
+            <p>Keep your driving licence number to hand. You'll need it to rent.</p>
+        </div>
+    </aside>
+
+    <main class="auth-main">
+        <form class="auth-form" id="signupForm" novalidate>
+            <h2>Create account</h2>
+
+            <div class="field">
+                <label for="sign_name">Username</label>
+                <input type="text" id="sign_name" autocomplete="username" autocapitalize="none"
+                       spellcheck="false" required data-label="username"
+                       pattern="(?=.*[A-Za-z])[A-Za-z0-9_]{3,30}"
+                       data-error="Username must be 3 to 30 letters, numbers or underscores, with at least one letter.">
+                <p class="hint">Letters, numbers and underscores, with at least one letter.</p>
+            </div>
+
+            <div class="field">
+                <label for="sign_password">Password</label>
+                <div class="password-wrap">
+                    <input type="password" id="sign_password" autocomplete="new-password"
+                           required minlength="6" data-label="password"
+                           data-error="Use at least 6 characters for your password.">
+                    <button type="button" class="toggle-password" data-toggle-password="sign_password"
+                            aria-pressed="false">Show</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="sign_email">Email</label>
+                <input type="email" id="sign_email" autocomplete="email" required
+                       data-label="email address"
+                       data-error="Enter a valid email address, like name@example.com.">
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="sign_contactNo">Contact number</label>
+                    <input type="tel" id="sign_contactNo" autocomplete="tel" inputmode="tel" required
+                           data-label="contact number" pattern="\+?[0-9]{7,15}"
+                           data-error="Enter a contact number with 7 to 15 digits, no spaces.">
+                </div>
+
+                <div class="field">
+                    <label for="sign_licenceNo">Licence number</label>
+                    <input type="text" class="mono" id="sign_licenceNo" autocomplete="off"
+                           autocapitalize="characters" spellcheck="false" required
+                           data-label="licence number" pattern="[A-Za-z0-9]{5,20}"
+                           data-error="Enter your licence number as printed, letters and digits only.">
+                </div>
+            </div>
+
+            <fieldset class="field">
+                <legend>Membership</legend>
+                <div class="tiers">
+                    <label class="tier">
+                        <input type="radio" name="membership" value="false" checked>
+                        Regular
+                    </label>
+                    <label class="tier">
+                        <input type="radio" name="membership" value="true">
+                        Premium
+                    </label>
+                </div>
+                <p class="hint">You can change your membership later from your profile.</p>
+            </fieldset>
+
+            <p class="form-error" id="errTxT" role="alert" hidden></p>
+
+            <button type="submit" class="btn btn-primary btn-block" id="sign">Create account</button>
+
+            <p class="form-switch">Already have an account? <a href="login.html">Log in</a></p>
+        </form>
+    </main>
+
+</div>
+
+<script src="../js/common.js"></script>
+<script src="func.js"></script>
+</body>
+</html>
