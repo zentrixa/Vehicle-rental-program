@@ -1,13 +1,13 @@
 package com.finalproject.oopfinalproject.review;
 
-import com.finalproject.oopfinalproject.user.Customer;
+import com.finalproject.oopfinalproject.User.Customer;
 import com.finalproject.oopfinalproject.vehicle.Vehicle;
 
 public class Review {
-    protected String reviewID,comment;
-    protected Vehicle vehicle;
+    private String reviewID,comment;
+    private Vehicle vehicle;
     protected Customer customer;
-    protected int rating;
+    private int rating;
 
     public Review(String reviewID, Customer customer, Vehicle vehicle, String comment, int rating) {
         this.reviewID = reviewID;
@@ -17,7 +17,9 @@ public class Review {
         this.rating = rating;
     }
     public String toFileFormat(){
-        return reviewID+","+customer.getCustomerID()+","+vehicle.getVehicleID()+","+comment+","+rating;
+        String cleanComment=(this.comment!=null)? comment.replace(","," "):"";
+        return reviewID+","+customer.getId()+","+vehicle.getVehicleId()+","+cleanComment+","+rating;
     }
+
 }
 
