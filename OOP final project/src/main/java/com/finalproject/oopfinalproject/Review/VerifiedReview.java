@@ -2,7 +2,7 @@ package com.finalproject.oopfinalproject.Review;
 
 import com.finalproject.oopfinalproject.User.Customer;
 import com.finalproject.oopfinalproject.Vehicle.Vehicle;
-import com.finalproject.oopfinalproject.booking.Booking;
+import com.finalproject.oopfinalproject.Booking.Booking;
 
 public class VerifiedReview extends Review {
     private Booking booking;

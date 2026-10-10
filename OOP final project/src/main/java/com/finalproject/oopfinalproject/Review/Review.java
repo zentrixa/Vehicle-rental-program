@@ -21,6 +21,11 @@ public class Review {
         String cleanComment=(this.comment!=null)? comment.replace(","," "):"";
         return reviewID+","+customer.getId()+","+Vehicle.getVehicleId()+","+cleanComment+","+rating;
     }
+    public String getReviewID() { return reviewID; }
+    public Customer getCustomer() { return customer; }
+    public Vehicle getVehicle() { return Vehicle; }
+    public String getComment() { return comment; }
+    public int getRating() { return rating; }
 
 }
 

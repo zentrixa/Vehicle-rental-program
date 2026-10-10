@@ -29,9 +29,22 @@ public class ReviewController {
 
         String reviewID = "REV" + System.currentTimeMillis();
 
-        Review newReview = new Review(reviewID, customer, vehicle, comment, rating);
+        Review newReview = new VerifiedReview(reviewID, customer, vehicle, comment, rating, booking);
         ReviewManager.saveReview(newReview);
 
         return "redirect:/review/review.html";
+    }
+    // Display all reviews on an HTML page via Thymeleaf
+    @GetMapping("/reviews/list")
+    public String listReviews(Model model) {
+        model.addAttribute("reviews", ReviewManager.getAllReviewObjects());
+        return "review-list"; // maps to review-list.html
+    }
+
+    // Handle delete action from HTML
+    @PostMapping("/reviews/delete")
+    public String deleteReview(@RequestParam String reviewID) {
+        ReviewManager.deleteReview(reviewID);
+        return "redirect:/reviews/list";
     }
 }
