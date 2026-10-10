@@ -1,0 +1,7 @@
+V001|Car|Toyota|Axio|CAB-1234|Standard|6500.0|45000|true|5|Petrol
+V002|Car|Toyota|Prius|CAD-5678|Luxury|9500.0|30000|true|5|Hybrid
+V003|Car|Suzuki|Alto|CAE-2468|Economy|4000.0|62000|true|4|Petrol
+V004|Van|Toyota|HiAce|PH-4521|Standard|12000.0|88000|true|1200
+V005|Van|Nissan|Caravan|PH-7788|Economy|10000.0|120000|true|1000
+V006|Motorcycle|Honda|CB 150|BBK-9087|Economy|2500.0|15000|true|150
+V007|Motorcycle|Yamaha|FZ|BCD-3344|Standard|3000.0|8000|true|149
