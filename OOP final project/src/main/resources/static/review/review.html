@@ -5,105 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate Your Rental</title>
 
-    <!-- 1. Firebase JS SDK Imports (v10.x Modules) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // =========================================================================
-        // 2. FIREBASE CONFIGURATION OBJECT
-        // Get these values from: Firebase Console -> Project Settings -> Your Apps
-        // =========================================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDOaRQODkuWWoxdqUlFDM3E0nzOoGV1IQo",
-            authDomain: "vehicle-rental-421f2.firebaseapp.com",
-            projectId: "vehicle-rental-421f2",
-            storageBucket: "vehicle-rental-421f2.firebasestorage.app",
-            messagingSenderId: "629599849447",
-            appId: "1:629599849447:web:c0a9a919ee156fc1340b42",
-            measurementId: "G-5DD6621T25"
-        };
-
-        // Initialize Firebase & Firestore
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Make review submission function available to form onsubmit
-        window.submitReviewToFirebase = async function(event) {
-            event.preventDefault();
-
-            const bookingID = document.getElementById('bookingID').value.trim();
-            const comment = document.getElementById('comment').value.trim();
-            const ratingElement = document.querySelector('input[name="rating"]:checked');
-
-            if (!ratingElement) {
-                showAlert("Please select a star rating.", "error");
-                return;
-            }
-
-            const rating = parseInt(ratingElement.value);
-            const submitBtn = document.getElementById('submitBtn');
-
-            submitBtn.innerText = "Verifying with Firebase...";
-            submitBtn.disabled = true;
-
-            try {
-                // Step A: Look up the Booking document in Firestore 'bookings' collection
-                const bookingRef = doc(db, "bookings", bookingID);
-                const bookingSnap = await getDoc(bookingRef);
-
-                if (!bookingSnap.exists()) {
-                    showAlert(`Error: Booking ref ${bookingID} not found in database.`, "error");
-                    resetBtn(submitBtn);
-                    return;
-                }
-
-                const bookingData = bookingSnap.data();
-
-                // Step B: Match ReviewManager.java logic -> Check if status is COMPLETED
-                if (!bookingData.status || bookingData.status.toUpperCase() !== "COMPLETED") {
-                    showAlert("Error: This rental is not marked as COMPLETED yet.", "error");
-                    resetBtn(submitBtn);
-                    return;
-                }
-
-                // Step C: Generate unique Review ID (REV + Timestamp)
-                const reviewID = "REV" + Date.now();
-
-                // Step D: Write new review to Firestore 'reviews' collection
-                await setDoc(doc(db, "reviews", reviewID), {
-                    reviewID: reviewID,
-                    bookingID: bookingID,
-                    customerID: bookingData.customerID || "CUST_SESSION",
-                    vehicleID: bookingData.vehicleID || "VEH_SESSION",
-                    rating: rating,
-                    comment: comment,
-                    timestamp: Date.now()
-                });
-
-                showAlert(`✓ Verified! Review ${reviewID} posted successfully.`, "success");
-                document.getElementById('reviewForm').reset();
-                resetBtn(submitBtn);
-
-            } catch (error) {
-                showAlert("Firebase Error: " + error.message, "error");
-                resetBtn(submitBtn);
-            }
-        };
-
-        function resetBtn(btn) {
-            btn.innerText = "Submit Verified Review";
-            btn.disabled = false;
-        }
-
-        function showAlert(msg, type) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.style.display = 'block';
-            alertBox.innerText = msg;
-            alertBox.className = type === "success" ? "alert alert-success" : "alert alert-error";
-        }
-    </script>
-
     <style>
         :root {
             --bg-offwhite: #f3f3f0;
@@ -272,16 +173,17 @@
 <div class="card">
     <div class="header">
         <h1>Rate your rental</h1>
-        <p>Enter your Booking Reference to leave feedback</p>
+        <p>Enter your details to leave feedback</p>
     </div>
 
     <div id="alertBox" class="alert"></div>
 
-    <form id="reviewForm" onsubmit="submitReviewToFirebase(event)">
+    <!-- Form submits directly via POST to our Java Controller endpoint -->
+    <form id="reviewForm" action="/reviews/submit" method="POST">
 
         <div class="input-group">
-            <label for="bookingID">Booking Reference</label>
-            <input type="text" id="bookingID" class="input-control" placeholder="e.g. BOOK999" required>
+            <label for="username">Your Name / Booking ID</label>
+            <input type="text" id="username" name="username" class="input-control" placeholder="e.g. John Doe" required>
         </div>
 
         <div class="rating-section">
@@ -297,7 +199,7 @@
 
         <div class="input-group">
             <label for="comment">Rental Feedback</label>
-            <textarea id="comment" class="input-control" placeholder="How was the vehicle condition and driving experience?" required></textarea>
+            <textarea id="comment" name="comment" class="input-control" placeholder="How was the vehicle condition and driving experience?" required></textarea>
         </div>
 
         <button type="submit" id="submitBtn" class="btn-uber">Submit Verified Review</button>

@@ -1,7 +1,7 @@
-package com.finalproject.oopfinalproject.review;
+package com.finalproject.oopfinalproject.Review;
 
 import com.finalproject.oopfinalproject.User.Customer;
-import com.finalproject.oopfinalproject.vehicle.Vehicle;
+import com.finalproject.oopfinalproject.Vehicle.Vehicle;
 import com.finalproject.oopfinalproject.booking.Booking;
 
 public class VerifiedReview extends Review {
