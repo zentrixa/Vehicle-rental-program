@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browse the Fleet | Vehicle Rental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/vehicle.css">
+</head>
+<!-- MEMBER 2 - Vehicle Search Page (Read: search by brand, type, category) -->
+<body data-nav="fleet" data-page="search">
+<script>/* Shown only when a page is opened directly instead of through the running server */if(location.protocol==="file:"||location.port==="63342"){document.write('<div style="position:fixed;inset:0;z-index:9999;background:#0d1f20;color:#fff;font:16px/1.6 system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center"><div style="max-width:560px"><h1 style="color:#34c77b;margin:0 0 12px;font-size:26px">Start the server first</h1><p>This page was opened as a file, so it cannot load vehicles, bookings or styles.</p><p>In IntelliJ run <b>VehicleRentalApplication</b> (green Run button), then open <a style="color:#34c77b" href="http://localhost:8080">http://localhost:8080</a> in your browser.</p></div></div>');}</script>
+<header id="site-header"></header>
+
+<main>
+  <section class="page-band photo bg-road">
+    <div class="wrap">
+      <div class="crumbs"><a href="/">Home</a> / Fleet</div>
+      <h1>Find your vehicle</h1>
+      <p id="fleetSummary">Search by brand, model or plate number, then narrow down by type, price and branch.</p>
+    </div>
+    <div class="lane"></div>
+  </section>
+
+  <section class="page-body">
+    <div class="wrap fleet-layout">
+      <aside class="filters panel">
+        <div class="field">
+          <label for="q">Search</label>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input class="input" id="q" placeholder="Toyota, Vezel, CAB-4521">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Vehicle type</h4>
+          <div class="chips" id="typeChips">
+            <button class="chip on" data-type="">All</button>
+            <button class="chip" data-type="CAR">Cars</button>
+            <button class="chip" data-type="VAN">Vans</button>
+            <button class="chip" data-type="MOTORCYCLE">Motorcycles</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Maximum daily rate</h4>
+          <input type="range" id="maxRate" min="1000" max="20000" step="500" value="20000">
+          <div class="range-value"><span>Rs. 1,000</span><strong id="maxRateText">Any price</strong></div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Branch</h4>
+          <select class="input" id="branchFilter"><option value="">All branches</option></select>
+        </div>
+
+        <div class="filter-group">
+          <label class="checkbox"><input type="checkbox" id="onlyAvailable" checked> Only show vehicles I can book now</label>
+        </div>
+
+        <button class="btn btn-ghost btn-sm" id="resetFilters" style="width:100%">Reset filters</button>
+      </aside>
+
+      <div>
+        <div class="results-head">
+          <p><strong id="resultCount">0</strong> vehicles found</p>
+          <select class="select-sm" id="sortBy" aria-label="Sort by">
+            <option value="rate-asc">Price: low to high</option>
+            <option value="rate-desc">Price: high to low</option>
+            <option value="year-desc">Newest first</option>
+            <option value="name">Name A-Z</option>
+          </select>
+        </div>
+        <div class="fleet-grid" id="results"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script src="/js/vehicle.js"></script>
+</body>
+</html>
