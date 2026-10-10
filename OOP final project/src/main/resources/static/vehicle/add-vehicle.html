@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add a vehicle | Kerbside admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+    <link href="vehicle.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="/vehicle/vehicle-list.html">Kerbside</a>
+        <nav class="site-nav vehicle-nav" aria-label="Main">
+            <a href="/vehicle/vehicle-list.html">Vehicles</a>
+            <a href="/vehicle/vehicle-search.html">Search</a>
+            <a href="/vehicle/add-vehicle.html" aria-current="page">Add vehicle</a>
+            <a href="/admin/admin.html">Admin page</a>
+            <a href="/profile/profile.html">Profile</a>
+            <button type="button" class="link-button" data-logout>Log out</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Add a vehicle</h1>
+        <p class="page-sub">It gets the next vehicle ID automatically when you save it.</p>
+
+        <p class="form-success" id="formMsg" role="status" hidden></p>
+
+        <form class="vehicle-form" id="vehicleForm" novalidate>
+
+            <fieldset class="field">
+                <legend>Vehicle type</legend>
+                <div class="type-choices">
+                    <label class="tier"><input type="radio" name="type" value="Car" checked> Car</label>
+                    <label class="tier"><input type="radio" name="type" value="Van"> Van</label>
+                    <label class="tier"><input type="radio" name="type" value="Motorcycle"> Motorcycle</label>
+                </div>
+            </fieldset>
+
+            <div class="row">
+                <div class="field">
+                    <label for="brand">Brand</label>
+                    <input type="text" id="brand" name="brand" maxlength="40" required
+                           placeholder="Toyota" data-label="brand">
+                </div>
+                <div class="field">
+                    <label for="model">Model</label>
+                    <input type="text" id="model" name="model" maxlength="40" required
+                           placeholder="Axio" data-label="model">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="plateNumber">Plate number</label>
+                    <input type="text" class="mono" id="plateNumber" name="plateNumber" maxlength="12" required
+                           placeholder="CAB-1234" autocapitalize="characters" spellcheck="false" autocomplete="off"
+                           pattern="[A-Za-z0-9 \-]{4,12}" data-label="plate number"
+                           data-error="Enter the plate number with 4 to 12 letters, numbers, spaces or dashes, like CAB-1234.">
+                </div>
+                <div class="field">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required data-label="category">
+                        <option value="">Choose a category</option>
+                        <option value="Economy">Economy</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Luxury">Luxury</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label for="dailyRate">Daily rate (Rs.)</label>
+                    <input type="number" id="dailyRate" name="dailyRate" min="1" max="1000000" step="0.01"
+                           inputmode="decimal" required placeholder="6500" data-label="daily rate"
+                           data-error="The daily rate must be more than 0 and at most 1,000,000.">
+                </div>
+                <div class="field">
+                    <label for="mileage">Mileage (km)</label>
+                    <input type="number" id="mileage" name="mileage" min="0" max="2000000" step="1"
+                           inputmode="numeric" required placeholder="45000" data-label="mileage"
+                           data-error="Enter the mileage as a whole number of km, from 0 to 2,000,000.">
+                </div>
+            </div>
+
+            <!-- only the box for the chosen type is shown and sent -->
+            <fieldset class="field type-fields" data-type-fields="Car">
+                <legend>Car details</legend>
+                <div class="row">
+                    <div class="field">
+                        <label for="seats">Seats</label>
+                        <input type="number" id="seats" name="seats" min="2" max="9" step="1" value="5"
+                               inputmode="numeric" required data-label="number of seats"
+                               data-error="A car must have 2 to 9 seats.">
+                    </div>
+                    <div class="field">
+                        <label for="fuelType">Fuel type</label>
+                        <select id="fuelType" name="fuelType" required data-label="fuel type">
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="field type-fields" data-type-fields="Van" hidden disabled>
+                <legend>Van details</legend>
+                <div class="field">
+                    <label for="cargoCapacity">Cargo capacity (kg)</label>
+                    <input type="number" id="cargoCapacity" name="cargoCapacity" min="100" max="5000" step="1"
+                           inputmode="numeric" required placeholder="1200" data-label="cargo capacity"
+                           data-error="Cargo capacity must be between 100 and 5000 kg.">
+                </div>
+            </fieldset>
+
+            <fieldset class="field type-fields" data-type-fields="Motorcycle" hidden disabled>
+                <legend>Motorcycle details</legend>
+                <div class="field">
+                    <label for="engineCc">Engine size (cc)</label>
+                    <input type="number" id="engineCc" name="engineCc" min="50" max="2000" step="1"
+                           inputmode="numeric" required placeholder="150" data-label="engine size"
+                           data-error="Engine size must be between 50 and 2000 cc.">
+                </div>
+            </fieldset>
+
+            <fieldset class="field">
+                <legend>Availability</legend>
+                <div class="tiers">
+                    <label class="tier"><input type="radio" name="available" value="true" checked> Available to rent</label>
+                    <label class="tier"><input type="radio" name="available" value="false"> Not available</label>
+                </div>
+            </fieldset>
+
+            <p class="form-error" id="formError" role="alert" hidden></p>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" id="saveButton">Add vehicle</button>
+                <a class="btn btn-outline-dark" href="/vehicle/vehicle-list.html">Cancel</a>
+            </div>
+        </form>
+    </main>
+
+<script src="../js/common.js"></script>
+<script src="../js/session.js"></script>
+<script src="vehiclecommon.js"></script>
+<script src="addvehicle.js"></script>
+</body>
+</html>
