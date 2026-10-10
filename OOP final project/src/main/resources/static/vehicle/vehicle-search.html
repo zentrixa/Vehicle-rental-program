@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search vehicles | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+    <link href="vehicle.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="/vehicle/vehicle-list.html">Kerbside</a>
+        <nav class="site-nav vehicle-nav" aria-label="Main">
+            <a href="/vehicle/vehicle-list.html">Vehicles</a>
+            <a href="/vehicle/vehicle-search.html" aria-current="page">Search</a>
+            <a href="/vehicle/add-vehicle.html" data-admin-only hidden>Add vehicle</a>
+            <a href="/admin/admin.html" data-admin-only hidden>Admin page</a>
+            <a href="/profile/profile.html">Profile</a>
+            <button type="button" class="link-button" data-logout>Log out</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Search vehicles</h1>
+        <p class="page-sub">Find a vehicle by brand, type or category. Leave a box empty to include everything.</p>
+
+        <form class="search-filters" id="searchForm" role="search" novalidate>
+            <div class="field">
+                <label for="brand">Brand or model</label>
+                <input type="search" id="brand" name="brand" placeholder="e.g. Toyota" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="field">
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option value="">Any type</option>
+                    <option value="Car">Car</option>
+                    <option value="Van">Van</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="">Any category</option>
+                    <option value="Economy">Economy</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Luxury">Luxury</option>
+                </select>
+            </div>
+
+            <div class="search-actions">
+                <div class="field days-field">
+                    <label for="days">Rental days</label>
+                    <input type="number" id="days" min="1" max="365" step="1" value="3" inputmode="numeric">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-outline-dark" id="clearButton">Clear</button>
+            </div>
+        </form>
+
+        <p class="form-error" id="searchError" role="alert" hidden></p>
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+
+        <section aria-labelledby="resultsTitle">
+            <h2 class="visually-hidden" id="resultsTitle">Results</h2>
+            <div class="vehicle-cards" id="results"></div>
+        </section>
+
+        <div class="empty" id="emptyState" hidden>
+            <h2 id="emptyTitle"></h2>
+            <p id="emptyText"></p>
+        </div>
+    </main>
+
+<script src="../js/common.js"></script>
+<script src="../js/session.js"></script>
+<script src="vehiclecommon.js"></script>
+<script src="vehiclesearch.js"></script>
+</body>
+</html>

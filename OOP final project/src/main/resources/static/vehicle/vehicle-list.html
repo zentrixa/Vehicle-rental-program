@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vehicles | Kerbside</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="../css/site.css" rel="stylesheet">
+    <link href="vehicle.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="/vehicle/vehicle-list.html">Kerbside</a>
+        <nav class="site-nav vehicle-nav" aria-label="Main">
+            <a href="/vehicle/vehicle-list.html" aria-current="page">Vehicles</a>
+            <a href="/vehicle/vehicle-search.html">Search</a>
+            <a href="/vehicle/add-vehicle.html" data-admin-only hidden>Add vehicle</a>
+            <a href="/admin/admin.html" data-admin-only hidden>Admin page</a>
+            <a href="/profile/profile.html">Profile</a>
+            <button type="button" class="link-button" data-logout>Log out</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Vehicles</h1>
+        <p class="page-sub" id="welcome"></p>
+
+        <div class="actions" data-admin-only hidden>
+            <a class="btn btn-primary" href="/vehicle/add-vehicle.html">Add a vehicle</a>
+            <a class="btn btn-outline-dark" href="/vehicle/vehicle-search.html">Search vehicles</a>
+        </div>
+
+        <p class="form-success" id="listMsg" role="status" hidden></p>
+        <p class="form-error" id="listError" role="alert" hidden></p>
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+
+        <table class="vehicle-table" id="vehicleTable" hidden>
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Vehicle</th>
+                    <th scope="col">Plate</th>
+                    <th scope="col">Category</th>
+                    <th scope="col" class="num">Mileage</th>
+                    <th scope="col" class="num">Daily rate</th>
+                    <th scope="col" class="num">7-day price</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" id="actionsHeader" hidden><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody id="vehicleRows"></tbody>
+        </table>
+
+        <div class="empty" id="emptyState" hidden>
+            <h2 id="emptyTitle">No vehicles in the fleet yet</h2>
+            <p id="emptyText"></p>
+        </div>
+    </main>
+
+    <dialog id="deleteDialog" aria-labelledby="deleteTitle" aria-describedby="deleteText">
+        <h2 id="deleteTitle">Delete this vehicle?</h2>
+        <p id="deleteText"></p>
+        <div class="actions">
+            <button type="button" class="btn btn-outline-dark" id="cancelDelete">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDelete">Delete vehicle</button>
+        </div>
+    </dialog>
+
+<script src="../js/common.js"></script>
+<script src="../js/session.js"></script>
+<script src="vehiclecommon.js"></script>
+<script src="vehiclelist.js"></script>
+</body>
+</html>
