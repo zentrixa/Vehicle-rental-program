@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add a vehicle | Kerbside</title>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="vehicle.css" rel="stylesheet">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="brand" href="/vehicle/vehicle-list.html">Kerbside</a>
+    <nav class="site-nav vehicle-nav">
+        <a href="/vehicle/vehicle-list.html">Vehicles</a>
+        <a href="/vehicle/vehicle-search.html">Search</a>
+        <a href="/vehicle/add-vehicle.html">Add vehicle</a>
+    </nav>
+</header>
+
+<main class="page">
+    <h1>Add a vehicle</h1>
+    <p class="page-sub">The vehicle ID is given automatically.</p>
+    <p class="form-success" id="successMsg" hidden></p>
+
+    <form id="vehicleForm" class="vehicle-form">
+        <div class="field">
+            <span class="label">Vehicle type</span>
+            <div class="type-choices">
+                <label class="tier"><input type="radio" name="type" value="Car" checked> Car</label>
+                <label class="tier"><input type="radio" name="type" value="Van"> Van</label>
+                <label class="tier"><input type="radio" name="type" value="Motorcycle"> Motorcycle</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" name="brand" maxlength="40" placeholder="Toyota" required>
+            </div>
+            <div class="field">
+                <label for="model">Model</label>
+                <input type="text" id="model" name="model" maxlength="40" placeholder="Axio" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label for="plateNumber">Plate number</label>
+                <input type="text" id="plateNumber" name="plateNumber" maxlength="12" placeholder="CAB-1234" required>
+            </div>
+            <div class="field">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Choose a category</option>
+                    <option value="Economy">Economy</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Luxury">Luxury</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label for="dailyRate">Daily rate (Rs.)</label>
+                <input type="number" id="dailyRate" name="dailyRate" min="1" step="0.01" placeholder="6500" required>
+            </div>
+            <div class="field">
+                <label for="mileage">Mileage (km)</label>
+                <input type="number" id="mileage" name="mileage" min="0" step="1" placeholder="45000" required>
+            </div>
+        </div>
+
+        <fieldset class="type-fields" id="carFields">
+            <legend>Car details</legend>
+            <div class="row">
+                <div class="field">
+                    <label for="seats">Seats</label>
+                    <input type="number" id="seats" name="seats" min="2" max="9" value="5" required>
+                </div>
+                <div class="field">
+                    <label for="fuelType">Fuel type</label>
+                    <select id="fuelType" name="fuelType">
+                        <option>Petrol</option>
+                        <option>Diesel</option>
+                        <option>Hybrid</option>
+                        <option>Electric</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="type-fields" id="vanFields" hidden disabled>
+            <legend>Van details</legend>
+            <div class="field">
+                <label for="cargoCapacity">Cargo capacity (kg)</label>
+                <input type="number" id="cargoCapacity" name="cargoCapacity" min="100" max="5000" placeholder="1200" required>
+            </div>
+        </fieldset>
+
+        <fieldset class="type-fields" id="motorcycleFields" hidden disabled>
+            <legend>Motorcycle details</legend>
+            <div class="field">
+                <label for="engineCc">Engine size (cc)</label>
+                <input type="number" id="engineCc" name="engineCc" min="50" max="2000" placeholder="150" required>
+            </div>
+        </fieldset>
+
+        <div class="field">
+            <label for="imageName">Photo</label>
+            <select id="imageName" name="imageName"></select>
+            <img id="photoPreview" class="photo-preview" alt="" hidden>
+        </div>
+
+        <div class="field">
+            <span class="label">Availability</span>
+            <div class="tiers">
+                <label class="tier"><input type="radio" name="available" value="true" checked> Available</label>
+                <label class="tier"><input type="radio" name="available" value="false"> Not available</label>
+            </div>
+        </div>
+
+        <p class="form-error" id="errorMsg" hidden></p>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Add vehicle</button>
+            <a class="btn btn-outline-dark" href="/vehicle/vehicle-list.html">Cancel</a>
+        </div>
+    </form>
+</main>
+
+<script src="vehicle.js"></script>
+<script src="addvehicle.js"></script>
+</body>
+</html>
